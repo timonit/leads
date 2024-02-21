@@ -1,0 +1,24 @@
+.table {
+  display: table;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 2em;
+}
+
+.table-head,.table-row {
+  display: table-row;
+  gap: 1em;
+  width: 100%;
+}
+
+.table-row:hover {
+  background-color: rgb(100,100,100);
+}
+
+.table-row_td,.table-head_th {
+  display: table-cell;
+  flex-grow: 1;
+  flex-shrink: 1;
+  padding: 1em;
+}
