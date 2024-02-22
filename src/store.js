@@ -97,7 +97,7 @@ export class LeadStore extends EventTarget {
     this.fetching = true;
     this.dispatchEvent(new Event('fetchStart'));
     
-    await this.#fetchState(`${DOMAIN}${url.pathname}${url.search}`, all);
+    await this.#fetchState(`${DOMAIN}${url.pathname}${url.search}&with=user`, all);
     this.fetching = false;
     this.dispatchEvent(new Event('fetchEnd'));
   }

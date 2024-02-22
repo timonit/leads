@@ -22,9 +22,6 @@
 * }} Cell
 */
 
-/**
-* @extends Array<Cell>
-*/
 export class TableRow {
  collumns = [];
 
@@ -75,7 +72,9 @@ export class TableRow {
    this.getCollumns().forEach((col) => {
      const td = document.createElement('td');
      td.classList.add('table-row_td');
-     td.innerText = this.item[col];
+     if (['created_at', 'updated_at'].includes(col)) {
+      td.textContent = dayjs.unix(this.item[col]).toDate().toLocaleString();
+     } else td.textContent = this.item[col];
      row.appendChild(td);
    });
 

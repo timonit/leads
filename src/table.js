@@ -14,15 +14,7 @@ const colNames = [
     prop: 'name'
   },
   {
-    title: 'Дата создания',
-    prop: 'created_at'
-  },
-  {
-    title: 'Удален',
-    prop: 'is_deleted'
-  },
-  {
-    title: 'цена',
+    title: 'Бюджет',
     prop: 'price'
   },
   {
@@ -30,21 +22,13 @@ const colNames = [
     prop: 'responsible_user_id'
   },
   {
-    title: 'Счет',
-    prop: 'score'
+    title: 'Дата создания',
+    prop: 'created_at'
   },
   {
-    title: 'Статус',
-    prop: 'status_id'
-  },
-  {
-    title: 'Обновлен в',
+    title: 'Дата изменения',
     prop: 'updated_at'
-  },
-  {
-    title: 'Автор обновления',
-    prop: 'updated_by'
-  },
+  }
 ]
 
 export class Table {
@@ -58,7 +42,7 @@ export class Table {
   page = 1;
 
   order = {
-    price: 'asc'
+    id: 'asc',
   }
 
   store = new LeadStore();
@@ -72,7 +56,7 @@ export class Table {
 
   constructor(appEl) {
     this.appEl = appEl;
-    this.collumns = new TableHeaders();
+    this.collumns = new TableHeaders(this);
     this.collumns.push(...colNames);
   }
 
