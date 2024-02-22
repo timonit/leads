@@ -69,11 +69,11 @@ export class TableRow {
  }
 
  render() {
-   const row = document.createElement('div');
+   const row = document.createElement('tr');
    row.classList.add('table-row');
    
    this.getCollumns().forEach((col) => {
-     const td = document.createElement('div');
+     const td = document.createElement('td');
      td.classList.add('table-row_td');
      td.innerText = this.item[col];
      row.appendChild(td);

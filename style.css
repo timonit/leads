@@ -16,9 +16,13 @@
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  padding: 2em;
   min-width: 320px;
   min-height: 100vh;
+}
+
+#app {
+  width: 100%;
 }
 
 button {

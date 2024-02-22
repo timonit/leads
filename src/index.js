@@ -1,13 +1,9 @@
-import { LeadStore } from './store.js';
 import { Table } from './table.js';
 
-const store = new LeadStore();
-const result = await store.getLeads();
-const body = document.body;
+const app = document.createElement('div');
+app.id = 'app';
+document.body.appendChild(app);
 
-console.log(result);
+const table = new Table(app);
 
-const table = new Table();
-
-table.state = result._embedded.leads;
-body.appendChild(table.render());
+await table.init();
