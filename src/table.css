@@ -74,8 +74,3 @@
   gap: 3em;
 }
 
-
-
-.loader::after {
-  content: '...';
-}
