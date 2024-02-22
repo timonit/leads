@@ -1,5 +1,3 @@
-import { DOMAIN, ACCESS_TOKEN } from './constants.js';
-
 /**
  * @typedef {{[p: string]: 'asc' | 'desc'}} Order
  */
@@ -12,7 +10,7 @@ import { DOMAIN, ACCESS_TOKEN } from './constants.js';
  */
 
 export class LeadStore extends EventTarget {
-  domain = DOMAIN;
+  domain = SERVICE_URL;
 
   accessToken = ACCESS_TOKEN;
 
@@ -79,7 +77,7 @@ export class LeadStore extends EventTarget {
         setTimeout(async () => {
           try {
             const url = new URL(data._links.next.href);
-            await this.#fetchState(`${DOMAIN}${url.pathname}${url.search}`, true);
+            await this.#fetchState(`${this.domain}${url.pathname}${url.search}`, true);
             res();
           } catch(err) {
             rej(err);
@@ -97,7 +95,7 @@ export class LeadStore extends EventTarget {
     this.fetching = true;
     this.dispatchEvent(new Event('fetchStart'));
     
-    await this.#fetchState(`${DOMAIN}${url.pathname}${url.search}&with=user`, all);
+    await this.#fetchState(`${this.domain}${url.pathname}${url.search}&with=user`, all);
     this.fetching = false;
     this.dispatchEvent(new Event('fetchEnd'));
   }

@@ -3,7 +3,6 @@ import { TableHeaders } from './table-headers.js';
 import { TableRow } from './table-row.js';
 import { LeadStore } from './store.js';
 import { Tableloader } from './table-loader.js';
-import { COLLUMS } from './constants.js';
 
 
 export class Table {
