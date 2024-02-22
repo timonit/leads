@@ -111,17 +111,19 @@ export class Table {
 
     const tBody = document.createElement('tbody');
     
-    this.store.state._embedded.leads.forEach((item) => {
-      const row = new TableRow(item);
-      row.setCollumns(this.collumns.map(el => el.prop));
-      tBody.appendChild(row.render());
-    });
+    if (this.store.state) {
+      this.store.state._embedded.leads.forEach((item) => {
+        const row = new TableRow(item);
+        row.setCollumns(this.collumns.map(el => el.prop));
+        tBody.appendChild(row.render());
+      });
+    }
 
     if (this.store.fetching) tBody.appendChild(new Tableloader().render());
 
     table.appendChild(tBody);
-
     table.appendChild(this.tableFooter.render());
+
     this.appEl.appendChild(table);
   }
 }

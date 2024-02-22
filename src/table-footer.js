@@ -39,6 +39,11 @@ export class TableFooter {
   createNextBtn() {
     const btn = TableFooter.createBtn('next', ['btn', 'btn__next']);
 
+    if (!this.table.store.state) {
+      btn.disabled = true;
+      return btn
+    }
+
     if (this.table.store.state._links.next) {
       btn.addEventListener('click', async () => {
         await this.table.store.fetchNextPage();
@@ -51,6 +56,11 @@ export class TableFooter {
   createPrevBtn() {
     const btn = TableFooter.createBtn('prev', ['btn', 'btn__prev']);
 
+    if (!this.table.store.state) {
+      btn.disabled = true;
+      return btn
+    }
+
     if (this.table.store.state._links.prev) {
       btn.addEventListener('click', async () => {
         await this.table.store.fetchPrevPage();
@@ -62,6 +72,8 @@ export class TableFooter {
 
   createPageBtn() {
     const btn = document.createElement('div');
+    if (!this.table.store.state) return btn;
+
     btn.textContent = this.table.store.state._page;
     btn.classList.add('table-footer_page', 'table-footer_page__current')
     
@@ -89,6 +101,19 @@ export class TableFooter {
     return container;
   }
 
+  createFirstPageBtn() {
+    const btn = TableFooter.createBtn('1', ['btn', 'btn__first']);
+    if (!this.table.store.state || !this.table.store.state._links.first) return '';
+
+    if (this.table.store.state._links.first) {
+      btn.addEventListener('click', async () => {
+        await this.table.store.fetchFirstPage();
+      });
+    } else btn.disabled = true;
+
+    return btn;
+  }
+
   render() {
     const footer = document.createElement('tfoot');
     const rowFooter = document.createElement('tr');
@@ -107,6 +132,7 @@ export class TableFooter {
     paginator.classList.add('paginator');
    
     paginator.appendChild(this.createPrevBtn());
+    paginator.append(this.createFirstPageBtn());
     paginator.appendChild(this.createPageBtn());
     paginator.appendChild(this.createNextBtn());
 

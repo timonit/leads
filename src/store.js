@@ -41,7 +41,7 @@ export class LeadStore extends EventTarget {
     return queryParams.toString();
   }
 
-  fetch(url) {
+  #fetch(url) {
     return fetch(
       url,
       {
@@ -55,13 +55,12 @@ export class LeadStore extends EventTarget {
    * @param {string} url 
    * @param {boolean} all 
    */
-  async fetchState(url, all) {
+  async #fetchState(url, all) {
     return new Promise(async (res, rej) => {
-      const response = await this.fetch(url);
+      const response = await this.#fetch(url);
       if (!response.ok) throw new Error(`${response.status}: ${response.statusText}`);
       
       const data = await response.json();
-      console.log(data);
 
       if (!all) {
         this.state = data;
@@ -80,7 +79,7 @@ export class LeadStore extends EventTarget {
         setTimeout(async () => {
           try {
             const url = new URL(data._links.next.href);
-            await this.fetchState(`${DOMAIN}${url.pathname}${url.search}`, true);
+            await this.#fetchState(`${DOMAIN}${url.pathname}${url.search}`, true);
             res();
           } catch(err) {
             rej(err);
@@ -91,39 +90,39 @@ export class LeadStore extends EventTarget {
   }
 
   /**
+   * @param {URL} url 
+   * @param {boolean} all 
+   */
+  async goTo(url, all) {
+    this.fetching = true;
+    this.dispatchEvent(new Event('fetchStart'));
+    
+    await this.#fetchState(`${DOMAIN}${url.pathname}${url.search}`, all);
+    this.fetching = false;
+    this.dispatchEvent(new Event('fetchEnd'));
+  }
+
+  /**
    * 
    * @param {QueryOptions} queryOptions 
    */
   async fetchLeads(queryOptions) {
-    this.fetching = true;
-    this.dispatchEvent(new Event('fetchStart'));
-
     const url = new URL(`${this.domain}/api/v4/leads`);
     url.search = LeadStore.convertToQueryParams(queryOptions, queryOptions.limit ==='all' );
 
     if (queryOptions.limit ==='all') this.state = undefined;
-    await this.fetchState(url, queryOptions.limit ==='all');
-    this.fetching = false;
-    this.dispatchEvent(new Event('fetchEnd'));
+    await this.goTo(url, queryOptions.limit ==='all');
   }
 
   async fetchNextPage() {
-    this.fetching = true;
-    this.dispatchEvent(new Event('fetchStart'));
-
-    const url = new URL(this.state._links.next.href);
-    await this.fetchState(`${DOMAIN}${url.pathname}${url.search}`);
-    this.fetching = false;
-    this.dispatchEvent(new Event('fetchEnd'));
+    await this.goTo(new URL(this.state._links.next.href));
   }
 
   async fetchPrevPage() {
-    this.fetching = true;
-    this.dispatchEvent(new Event('fetchStart'));
+    await this.goTo(new URL(this.state._links.prev.href));
+  }
 
-    const url = new URL(this.state._links.prev.href);
-    await this.fetchState(`${DOMAIN}${url.pathname}${url.search}`);
-    this.fetching = false;
-    this.dispatchEvent(new Event('fetchEnd'));
+  async fetchFirstPage() {
+    await this.goTo(new URL(this.state._links.first.href));
   }
 }
