@@ -18,7 +18,6 @@ body {
   display: flex;
   padding: 2em;
   min-width: 320px;
-  min-height: 100vh;
 }
 
 #app {

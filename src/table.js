@@ -3,33 +3,8 @@ import { TableHeaders } from './table-headers.js';
 import { TableRow } from './table-row.js';
 import { LeadStore } from './store.js';
 import { Tableloader } from './table-loader.js';
+import { COLLUMS } from './constants.js';
 
-const colNames = [
-  {
-    title: 'ID',
-    prop: 'id'
-  },
-  {
-    title: 'Название',
-    prop: 'name'
-  },
-  {
-    title: 'Бюджет',
-    prop: 'price'
-  },
-  {
-    title: 'Ответственное лицо',
-    prop: 'responsible_user_id'
-  },
-  {
-    title: 'Дата создания',
-    prop: 'created_at'
-  },
-  {
-    title: 'Дата изменения',
-    prop: 'updated_at'
-  }
-]
 
 export class Table {
   /**
@@ -57,7 +32,7 @@ export class Table {
   constructor(appEl) {
     this.appEl = appEl;
     this.collumns = new TableHeaders(this);
-    this.collumns.push(...colNames);
+    this.collumns.push(...COLLUMS);
   }
 
   async init() {
